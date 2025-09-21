@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMaven - Interactive Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .welcome-screen, .login-screen, .dashboard {
+            padding: 30px;
+            transition: all 0.4s ease;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            width: 80px;
+            height: 80px;
+            background: #6C63FF;
+            border-radius: 50%;
+            color: white;
+            font-size: 40px;
+        }
+        
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+        
+        .tagline {
+            color: #718096;
+            font-size: 16px;
+        }
+        
+        .role-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 25px 0;
+        }
+        
+        .role-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #edf2f7;
+            color: #4a5568;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .role-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+        
+        .role-btn.student {
+            border-left: 5px solid #4299e1;
+        }
+        
+        .role-btn.teacher {
+            border-left: 5px solid #48bb78;
+        }
+        
+        .role-btn.admin {
+            border-left: 5px solid #f56565;
+        }
+        
+        h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .link {
+            color: #4299e1;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        .error {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success {
+            color: #48bb78;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #4299e1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #e53e3e;
+        }
+        
+        .dashboard-content {
+            padding: 20px;
+        }
+        
+        .dashboard-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+        
+        .menu-item {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: #4299e1;
+        }
+        
+        .menu-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: #4299e1;
+        }
+        
+        .menu-title {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+        
+        .menu-desc {
+            font-size: 13px;
+            color: #718096;
+        }
+        
+        .progress-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-title {
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #2d3748;
+            font-size: 18px;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #48bb78;
+            border-radius: 6px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        .progress-text {
+            font-size: 15px;
+            color: #718096;
+            text-align: right;
+        }
+        
+        /* Teacher specific styles */
+        .teacher .menu-icon {
+            color: #48bb78;
+        }
+        
+        .teacher .menu-item:hover {
+            border-color: #48bb78;
+        }
+        
+        /* Admin specific styles */
+        .admin .menu-icon {
+            color: #f56565;
+        }
+        
+        .admin .menu-item:hover {
+            border-color: #f56565;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: #4299e1;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 10px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            max-width: 350px;
+        }
+        
+        .notification.success {
+            background: #48bb78;
+        }
+        
+        .notification.error {
+            background: #f56565;
+        }
+        
+        .user-data {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+        
+        .small-text {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 8px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification success" id="successNotification"></div>
+    <div class="notification error" id="errorNotification"></div>
+
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-text">MindMaven</div>
+                <div class="tagline">Empowering minds through interactive learning</div>
+            </div>
+            
+            <div class="role-buttons">
+                <button class="role-btn student" data-role="student">
+                    <i class="fas fa-user-graduate"></i> Student Login
+                </button>
+                <button class="role-btn teacher" data-role="teacher">
+                    <i class="fas fa-chalkboard-teacher"></i> Teacher Login
+                </button>
+                <button class="role-btn admin" data-role="admin">
+                    <i class="fas fa-user-shield"></i> Admin Login
+                </button>
+            </div>
+        </div>
+        
+        <!-- Student Login -->
+        <div class="login-screen hidden" id="studentLogin">
+            <button class="back-btn" onclick="showScreen('welcomeScreen')">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2>Student Login</h2>
+            
+            <form id="studentLoginForm">
+                <div class="form-group">
+                    <label for="studentId">Student ID / Phone Number</label>
+                    <input type="text" id="studentId" placeholder="Enter your ID or phone number" required>
+                    <div class="error" id="studentIdError">Please enter a valid ID or phone number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentPassword">Password</label>
+                    <input type="password" id="studentPassword" placeholder="Enter your password" required>
+                    <div class="error" id="studentPasswordError">Password is required</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <a class="link" onclick="showStudentRegister()">First time user? Register here</a>
+            <a class="link" onclick="showPasswordReset('student')">Forgot Password?</a>
+        </div>
+        
+        <!-- Student Registration -->
+        <div class="login-screen hidden" id="studentRegister">
+            <button class="back-btn" onclick="showScreen('studentLogin')">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2>Student Registration</h2>
+            
+            <form id="studentRegisterForm">
+                <div class="form-group">
+                    <label for="studentName">Full Name</label>
+                    <input type="text" id="studentName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentClass">Class/Grade</label>
+                    <input type="text" id="studentClass" placeholder="e.g. Grade 7" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentPhone">Phone Number</label>
+                    <input type="tel" id="studentPhone" placeholder="Enter your phone number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentLanguage">Language Preference</label>
+                    <select id="studentLanguage" required>
+                        <option value="">Select Language</option>
+                        <option value="english">English</option>
+                        <option value="spanish">Spanish</option>
+                        <option value="french">French</option>
+                        <option value="german">German</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentNewPassword">Create Password</label>
+                    <input type="password" id="studentNewPassword" placeholder="Create a password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentConfirmPassword">Confirm Password</label>
+                    <input type="password" id="studentConfirmPassword" placeholder="Confirm password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </form>
+        </div>
+        
+        <!-- Teacher Login -->
+        <div class="login-screen hidden" id="teacherLogin">
+            <button class="back-btn" onclick="showScreen('welcomeScreen')">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2>Teacher Login</h2>
+            
+            <form id="teacherLoginForm">
+                <div class="form-group">
+                    <label for="teacherId">Teacher ID / Email</label>
+                    <input type="text" id="teacherId" placeholder="Enter your ID or email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacherPassword">Password</label>
+                    <input type="password" id="teacherPassword" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <a class="link" onclick="showTeacherRegister()">New teacher? Register here</a>
+            <a class="link" onclick="showPasswordReset('teacher')">Forgot Password?</a>
+        </div>
+        
+        <!-- Teacher Registration -->
+        <div class="login-screen hidden" id="teacherRegister">
+            <button class="back-btn" onclick="showScreen('teacherLogin')">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2>Teacher Registration</h2>
+            
+            <form id="teacherRegisterForm">
+                <div class="form-group">
+                    <label for="teacherName">Full Name</label>
+                    <input type="text" id="teacherName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacherEmail">Email Address</label>
+                    <input type="email" id="teacherEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="schoolCode">School Code</label>
+                    <input type="text" id="schoolCode" placeholder="Enter your school code" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacherNewPassword">Create Password</label>
+                    <input type="password" id="teacherNewPassword" placeholder="Create a password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacherConfirmPassword">Confirm Password</label>
+                    <input type="password" id="teacherConfirmPassword" placeholder="Confirm password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+                <div class="small-text" style="text-align: center; margin-top: 10px;">Admin approval required after registration</div>
+            </form>
+        </div>
+        
+        <!-- Admin Login -->
+        <div class="login-screen hidden" id="adminLogin">
+            <button class="back-btn" onclick="showScreen('welcomeScreen')">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2>Admin Login</h2>
+            
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminId">Admin ID</label>
+                    <input type="text" id="adminId" placeholder="Enter admin ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <div class="small-text" style="text-align: center; margin-top: 15px;">
+                Default Admin Credentials:<br>
+                ID: admin | Password: admin123
+            </div>
+        </div>
+        
+        <!-- Password Reset -->
+        <div class="login-screen hidden" id="passwordReset">
+            <button class="back-btn" onclick="goBackFromReset()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2>Reset Password</h2>
+            
+            <form id="passwordResetForm">
+                <div class="form-group">
+                    <label for="resetEmail">Email Address</label>
+                    <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Send Reset Link
+                </button>
+            </form>
+        </div>
+        
+        <!-- Student Dashboard -->
+        <div class="dashboard hidden" id="studentDashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">S</div>
+                    <div>
+                        <div id="studentUserName">Student User</div>
+                        <div style="font-size: 13px; color: #718096;" id="studentUserClass">Grade 7</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="user-data">
+                <p>Welcome back, <span id="studentWelcomeName"></span>!</p>
+                <p>You're currently in <span id="studentWelcomeClass"></span></p>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="progress-section">
+                    <div class="progress-title">Learning Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="studentProgress" style="width: 65%"></div>
+                    </div>
+                    <div class="progress-text">65% Complete</div>
+                </div>
+                
+                <div class="dashboard-menu">
+                    <div class="menu-item" onclick="showNotification('STEM Games module would open here', 'success')">
+                        <div class="menu-icon">🎮</div>
+                        <div class="menu-title">Play Games</div>
+                        <div class="menu-desc">STEM learning games</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Quizzes module would open here', 'success')">
+                        <div class="menu-icon">📝</div>
+                        <div class="menu-title">Quizzes</div>
+                        <div class="menu-desc">Test your knowledge</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Leaderboard would open here', 'success')">
+                        <div class="menu-icon">🏆</div>
+                        <div class="menu-title">Leaderboard</div>
+                        <div class="menu-desc">See your ranking</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Badges collection would open here', 'success')">
+                        <div class="menu-icon">🛡️</div>
+                        <div class="menu-title">Badges</div>
+                        <div class="menu-desc">Achievements earned</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Offline content would open here', 'success')">
+                        <div class="menu-icon">📥</div>
+                        <div class="menu-title">Offline</div>
+                        <div class="menu-desc">Download content</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Progress details would open here', 'success')">
+                        <div class="menu-icon">📊</div>
+                        <div class="menu-title">Progress</div>
+                        <div class="menu-desc">View your stats</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Teacher Dashboard -->
+        <div class="dashboard hidden teacher" id="teacherDashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">T</div>
+                    <div>
+                        <div id="teacherUserName">Teacher User</div>
+                        <div style="font-size: 13px; color: #718096;">Science Department</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="user-data">
+                <p>Welcome back, <span id="teacherWelcomeName"></span>!</p>
+                <p>School Code: <span id="teacherSchoolCode"></span></p>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="dashboard-menu">
+                    <div class="menu-item" onclick="showNotification('Class Management would open here', 'success')">
+                        <div class="menu-icon">👨‍👩‍👧‍👦</div>
+                        <div class="menu-title">Class Management</div>
+                        <div class="menu-desc">Manage students & classes</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Progress Reports would open here', 'success')">
+                        <div class="menu-icon">📊</div>
+                        <div class="menu-title">Progress Reports</div>
+                        <div class="menu-desc">Student performance</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Quiz Assignment would open here', 'success')">
+                        <div class="menu-icon">📋</div>
+                        <div class="menu-title">Assign Quizzes</div>
+                        <div class="menu-desc">Create & assign tasks</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Leaderboards would open here', 'success')">
+                        <div class="menu-icon">🏆</div>
+                        <div class="menu-title">Leaderboards</div>
+                        <div class="menu-desc">Class rankings</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Data Export would open here', 'success')">
+                        <div class="menu-icon">📤</div>
+                        <div class="menu-title">Export Data</div>
+                        <div class="menu-desc">CSV reports</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Notifications would open here', 'success')">
+                        <div class="menu-icon">🔔</div>
+                        <div class="menu-title">Notifications</div>
+                        <div class="menu-desc">Student alerts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Dashboard -->
+        <div class="dashboard hidden admin" id="adminDashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div>
+                        <div>Admin User</div>
+                        <div style="font-size: 13px; color: #718096;">System Administrator</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="user-data">
+                <p>Welcome back, Administrator!</p>
+                <p>System Status: <span style="color: #48bb78;">Online</span></p>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="dashboard-menu">
+                    <div class="menu-item" onclick="showNotification('User Management would open here', 'success')">
+                        <div class="menu-icon">👥</div>
+                        <div class="menu-title">User Management</div>
+                        <div class="menu-desc">Students & Teachers</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Content Management would open here', 'success')">
+                        <div class="menu-icon">📚</div>
+                        <div class="menu-title">Content Management</div>
+                        <div class="menu-desc">Games & Lessons</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('System Analytics would open here', 'success')">
+                        <div class="menu-icon">📈</div>
+                        <div class="menu-title">System Analytics</div>
+                        <div class="menu-desc">Platform usage stats</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('Approvals would open here', 'success')">
+                        <div class="menu-icon">✅</div>
+                        <div class="menu-title">Approvals</div>
+                        <div class="menu-desc">Teacher registrations</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('School Management would open here', 'success')">
+                        <div class="menu-icon">🏫</div>
+                        <div class="menu-title">School Management</div>
+                        <div class="menu-desc">Add/Edit schools</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotification('System Settings would open here', 'success')">
+                        <div class="menu-icon">⚙️</div>
+                        <div class="menu-title">System Settings</div>
+                        <div class="menu-desc">Platform configuration</div>
+                    </div>
+                </div>
+                
+                <div class="progress-section">
+                    <div class="progress-title">System Statistics</div>
+                    <div style="margin-bottom: 10px;">
+                        <span>Registered Students: <strong id="studentCount">0</strong></span>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <span>Registered Teachers: <strong id="teacherCount">0</strong></span>
+                    </div>
+                    <div>
+                        <span>Pending Approvals: <strong id="approvalCount">0</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize users in localStorage if not already set
+        function initializeUsers() {
+            if (!localStorage.getItem('students')) {
+                localStorage.setItem('students', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('teachers')) {
+                localStorage.setItem('teachers', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('admins')) {
+                // Prepopulate with a default admin account
+                localStorage.setItem('admins', JSON.stringify([
+                    { id: 'admin', password: 'admin123', name: 'System Administrator' }
+                ]));
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById(type + 'Notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Show specified screen and hide others
+        function showScreen(screenId) {
+            document.querySelectorAll('.welcome-screen, .login-screen, .dashboard').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+        
+        // Show student registration
+        function showStudentRegister() {
+            showScreen('studentRegister');
+        }
+        
+        // Show teacher registration
+        function showTeacherRegister() {
+            showScreen('teacherRegister');
+        }
+        
+        // Show password reset
+        function showPasswordReset(role) {
+            document.getElementById('passwordResetForm').setAttribute('data-role', role);
+            showScreen('passwordReset');
+        }
+        
+        // Go back from password reset to the appropriate login screen
+        function goBackFromReset() {
+            const role = document.getElementById('passwordResetForm').getAttribute('data-role');
+            showScreen(role + 'Login');
+        }
+        
+        // Logout function
+        function logout() {
+            showScreen('welcomeScreen');
+        }
+        
+        // Register a new student
+        function registerStudent(studentData) {
+            const students = JSON.parse(localStorage.getItem('students'));
+            
+            // Check if student already exists
+            const existingStudent = students.find(s => s.phone === studentData.phone);
+            if (existingStudent) {
+                showNotification('A student with this phone number already exists', 'error');
+                return false;
+            }
+            
+            // Add new student
+            students.push(studentData);
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            return true;
+        }
+        
+        // Register a new teacher
+        function registerTeacher(teacherData) {
+            const teachers = JSON.parse(localStorage.getItem('teachers'));
+            
+            // Check if teacher already exists
+            const existingTeacher = teachers.find(t => t.email === teacherData.email);
+            if (existingTeacher) {
+                showNotification('A teacher with this email already exists', 'error');
+                return false;
+            }
+            
+            // Add new teacher
+            teachers.push(teacherData);
+            localStorage.setItem('teachers', JSON.stringify(teachers));
+            
+            return true;
+        }
+        
+        // Authenticate student
+        function authenticateStudent(identifier, password) {
+            const students = JSON.parse(localStorage.getItem('students'));
+            const student = students.find(s => (s.phone === identifier || s.id === identifier) && s.password === password);
+            return student;
+        }
+        
+        // Authenticate teacher
+        function authenticateTeacher(identifier, password) {
+            const teachers = JSON.parse(localStorage.getItem('teachers'));
+            const teacher = teachers.find(t => (t.email === identifier || t.id === identifier) && t.password === password);
+            return teacher;
+        }
+        
+        // Authenticate admin
+        function authenticateAdmin(id, password) {
+            const admins = JSON.parse(localStorage.getItem('admins'));
+            const admin = admins.find(a => a.id === id && a.password === password);
+            return admin;
+        }
+        
+        // Update admin dashboard stats
+        function updateAdminStats() {
+            const students = JSON.parse(localStorage.getItem('students'));
+            const teachers = JSON.parse(localStorage.getItem('teachers'));
+            
+            document.getElementById('studentCount').textContent = students.length;
+            document.getElementById('teacherCount').textContent = teachers.length;
+            document.getElementById('approvalCount').textContent = teachers.filter(t => !t.approved).length;
+        }
+        
+        // Set up event listeners when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUsers();
+            
+            // Role selection buttons
+            document.querySelectorAll('.role-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const role = this.getAttribute('data-role');
+                    showScreen(role + 'Login');
+                });
+            });
+            
+            // Student login form
+            document.getElementById('studentLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const identifier = document.getElementById('studentId').value;
+                const password = document.getElementById('studentPassword').value;
+                
+                // Validate inputs
+                if (!identifier || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Authenticate student
+                const student = authenticateStudent(identifier, password);
+                
+                if (student) {
+                    // Update dashboard with student info
+                    document.getElementById('studentUserName').textContent = student.name;
+                    document.getElementById('studentUserClass').textContent = student.class;
+                    document.getElementById('studentWelcomeName').textContent = student.name;
+                    document.getElementById('studentWelcomeClass').textContent = student.class;
+                    
+                    // Show student dashboard on successful login
+                    showScreen('studentDashboard');
+                    showNotification('Login successful!', 'success');
+                } else {
+                    showNotification('Invalid credentials. Please try again.', 'error');
+                }
+            });
+            
+            // Student registration form
+            document.getElementById('studentRegisterForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('studentName').value;
+                const studentClass = document.getElementById('studentClass').value;
+                const phone = document.getElementById('studentPhone').value;
+                const language = document.getElementById('studentLanguage').value;
+                const password = document.getElementById('studentNewPassword').value;
+                const confirmPassword = document.getElementById('studentConfirmPassword').value;
+                
+                // Validate inputs
+                if (!name || !studentClass || !phone || !language || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+                
+                // Create student data object
+                const studentData = {
+                    id: 'ST' + Date.now().toString().substr(-6), // Generate a simple ID
+                    name: name,
+                    class: studentClass,
+                    phone: phone,
+                    language: language,
+                    password: password
+                };
+                
+                // Register student
+                if (registerStudent(studentData)) {
+                    // Clear form
+                    this.reset();
+                    
+                    // Show success message with student ID
+                    showNotification(`Registration successful! Your Student ID is: ${studentData.id}. Please use this ID or your phone number to login.`, 'success');
+                    
+                    // Go back to login after a brief delay
+                    setTimeout(() => {
+                        showScreen('studentLogin');
+                    }, 2000);
+                }
+            });
+            
+            // Teacher login form
+            document.getElementById('teacherLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const identifier = document.getElementById('teacherId').value;
+                const password = document.getElementById('teacherPassword').value;
+                
+                // Validate inputs
+                if (!identifier || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Authenticate teacher
+                const teacher = authenticateTeacher(identifier, password);
+                
+                if (teacher) {
+                    // Update dashboard with teacher info
+                    document.getElementById('teacherUserName').textContent = teacher.name;
+                    document.getElementById('teacherWelcomeName').textContent = teacher.name;
+                    document.getElementById('teacherSchoolCode').textContent = teacher.schoolCode;
+                    
+                    // Show teacher dashboard on successful login
+                    showScreen('teacherDashboard');
+                    showNotification('Login successful!', 'success');
+                } else {
+                    showNotification('Invalid credentials. Please try again.', 'error');
+                }
+            });
+            
+            // Teacher registration form
+            document.getElementById('teacherRegisterForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('teacherName').value;
+                const email = document.getElementById('teacherEmail').value;
+                const schoolCode = document.getElementById('schoolCode').value;
+                const password = document.getElementById('teacherNewPassword').value;
+                const confirmPassword = document.getElementById('teacherConfirmPassword').value;
+                
+                // Validate inputs
+                if (!name || !email || !schoolCode || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+                
+                // Create teacher data object
+                const teacherData = {
+                    id: 'TC' + Date.now().toString().substr(-6), // Generate a simple ID
+                    name: name,
+                    email: email,
+                    schoolCode: schoolCode,
+                    password: password,
+                    approved: false // Needs admin approval
+                };
+                
+                // Register teacher
+                if (registerTeacher(teacherData)) {
+                    // Clear form
+                    this.reset();
+                    
+                    // Show success message with teacher ID
+                    showNotification(`Registration submitted! Your Teacher ID is: ${teacherData.id}. Please use this ID or your email to login after admin approval.`, 'success');
+                    
+                    // Go back to login after a brief delay
+                    setTimeout(() => {
+                        showScreen('teacherLogin');
+                    }, 2000);
+                }
+            });
+            
+            // Admin login form
+            document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const id = document.getElementById('adminId').value;
+                const password = document.getElementById('adminPassword').value;
+                
+                // Validate inputs
+                if (!id || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Authenticate admin
+                const admin = authenticateAdmin(id, password);
+                
+                if (admin) {
+                    // Update admin dashboard stats
+                    updateAdminStats();
+                    
+                    // Show admin dashboard on successful login
+                    showScreen('adminDashboard');
+                    showNotification('Login successful!', 'success');
+                } else {
+                    showNotification('Invalid credentials. Please try again.', 'error');
+                }
+            });
+
+            console.log('Stored students:', JSON.parse(localStorage.getItem('students')));
+            console.log('Login attempt:', identifier, password);
+            
+            // Password reset form
+            document.getElementById('passwordResetForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('resetEmail').value;
+                const role = this.getAttribute('data-role');
+                
+                // Simulate password reset (would send email in real implementation)
+                showNotification('Password reset link has been sent to your email', 'success');
+                
+                // Go back to login after a brief delay
+                setTimeout(() => {
+                    showScreen(role + 'Login');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
